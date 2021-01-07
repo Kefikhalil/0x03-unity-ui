@@ -5006,6 +5006,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeed: 20
   health: 5
+  ScoreText: {fileID: 2119453503}
 --- !u!54 &1334147357
 Rigidbody:
   m_ObjectHideFlags: 0

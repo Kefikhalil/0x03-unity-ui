@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class PlayerController : MonoBehaviour
     public int health = 5;
     private Scene maze;
     private Rigidbody rb;
+    public Text ScoreText;
 
     void Start()
     {
@@ -54,13 +56,18 @@ public class PlayerController : MonoBehaviour
         controller.Move(playerVelocity * Time.deltaTime);
 
     }
-    void OnTriggerEnter(Collider other)
+    void SetScoreText()
+    {
+        ScoreText.text = "Score: " + score.ToString();
+    }
+
+        void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Pickup")
         {
             score++;
             Destroy(other.gameObject);
-            Debug.Log($"Score: {score}");
+            //Debug.Log($"Score: {score}");
         }
         if (other.tag == "Trap")
         {
