@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private Scene maze;
     private Rigidbody rb;
     public Text ScoreText;
+    public Text healthText;
 
     void Start()
     {
@@ -60,8 +61,12 @@ public class PlayerController : MonoBehaviour
     {
         ScoreText.text = "Score: " + score.ToString();
     }
+    void SetHealthText()
+    {
+        healthText.text = "Health: " + health.ToString();
+    }
 
-        void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Pickup")
         {
@@ -72,11 +77,11 @@ public class PlayerController : MonoBehaviour
         if (other.tag == "Trap")
         {
             health--;
-            Debug.Log($"Health: {health}");
+           // Debug.Log($"Health: {health}");
         }
         if (other.tag == "Goal")
         {
-            Debug.Log("You win!");
+           // Debug.Log("You win!");
         }
     }
 }
