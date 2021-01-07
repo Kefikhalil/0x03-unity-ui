@@ -11,18 +11,17 @@ public class PlayerController : MonoBehaviour
     public float playerSpeed = 2.0f;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
-    private int score = 0;
+    private int score;
     public int health = 5;
     private Scene maze;
-    private Rigidbody rb;
     public Text ScoreText;
     public Text healthText;
-
+    public Text youWinLose;
+    public Image bg;
     void Start()
     {
         controller = gameObject.AddComponent<CharacterController>();
-        maze = SceneManager.GetActiveScene();
-        rb = GetComponent<Rigidbody>();
+       // maze = SceneManager.GetActiveScene();
 
     }
 
@@ -31,11 +30,22 @@ public class PlayerController : MonoBehaviour
     {
         if (health == 0)
         {
-            Debug.Log("Game Over!");
+           // Debug.Log("Game Over!");
             health = 5;
             score = 0;
-            SceneManager.LoadScene(maze.name);
+           // SceneManager.LoadScene(maze.name);
+            bg.color = Color.red;
+            youWinLose.text = "Game Over!".ToString();
+            youWinLose.color = Color.white;
+            bg.gameObject.SetActive(true);
+            StartCoroutine(LoadScene(3));
         }
+        IEnumerator LoadScene(float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+        }
+
     }
     void FixedUpdate()
     {
@@ -66,22 +76,39 @@ public class PlayerController : MonoBehaviour
         healthText.text = "Health: " + health.ToString();
     }
 
+
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Pickup")
         {
             score++;
             Destroy(other.gameObject);
+            SetScoreText();
             //Debug.Log($"Score: {score}");
         }
         if (other.tag == "Trap")
         {
             health--;
-           // Debug.Log($"Health: {health}");
+            SetHealthText();
+            // Debug.Log($"Health: {health}");
         }
         if (other.tag == "Goal")
         {
            // Debug.Log("You win!");
         }
+        if (other.gameObject.tag == "Goal")
+        {
+            bg.color = Color.green;
+            youWinLose.text = "You Win!".ToString();
+            youWinLose.color = Color.black;
+            bg.gameObject.SetActive(true);
+            StartCoroutine(LoadScene(3));
+        }
+        IEnumerator LoadScene(float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+        }
+
     }
 }
